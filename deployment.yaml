@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-application
+  template:
+    metadata:
+      labels:
+        app: my-application
+    spec:
+      containers:
+      - name: my-app
+        image: my-app-image
+        ports:
+        - containerPort: 3000
+        env:
+          - name: MONGO_URI
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: mongo-root-username
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: mongo-root-password
